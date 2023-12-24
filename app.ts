@@ -1,4 +1,5 @@
 const GRAVITY = 9.8;
+const BIRD_FRAME = 60;
 
 class AngryBird {
   size: number;
@@ -50,18 +51,14 @@ class AngryBird {
         this.flyInterval && clearInterval(this.flyInterval);
         return;
       }
-      this.loc.x += x_velocity / 10;
-      this.loc.y += y_velocity / 10;
-      console.log(
-        `translate(${Math.floor(this.loc.x)}px,${Math.floor(this.loc.y)}px)`
-      );
-
+      this.loc.x += x_velocity / BIRD_FRAME;
+      this.loc.y += y_velocity / BIRD_FRAME;
       this.bird.style.transform = `translate(${this.loc.x}px,${
         (this.loc.y * -1) / 2
       }px)`;
       if (this.loc.y < 0) this.flyInterval && clearInterval(this.flyInterval);
-      y_velocity -= GRAVITY / 10;
-    }, 100);
+      y_velocity -= GRAVITY / BIRD_FRAME;
+    }, Math.floor(1000 / BIRD_FRAME));
   };
 }
 
