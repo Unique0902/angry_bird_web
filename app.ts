@@ -59,7 +59,10 @@ class AngryBird {
       this.bird.style.transform = `translate(${this.loc.x}px,${
         (this.loc.y * -1) / 2
       }px)`;
-      if (this.loc.y < 0) this.flyInterval && clearInterval(this.flyInterval);
+      if (this.loc.y < 0) {
+        this.flyInterval && clearInterval(this.flyInterval);
+        this.clearLoc();
+      }
       y_velocity -= GRAVITY / BIRD_FRAME;
     }, Math.floor(1000 / BIRD_FRAME / SPEED));
   };
@@ -82,3 +85,18 @@ if (stopBtn) {
     bird.stop();
   });
 }
+
+birdTag?.addEventListener('mousedown', () => {
+  document.addEventListener('mouseup', function upEventCallback(e) {
+    const xDiff =
+      e.clientX - birdTag?.getBoundingClientRect().x - bird.size / 2;
+    const yDiff =
+      e.clientY - birdTag?.getBoundingClientRect().y - bird.size / 2;
+
+    const velocity = (xDiff ** 2 + yDiff ** 2) ** (1 / 2);
+    let degree = (Math.atan(yDiff / (xDiff * -1)) * 180) / Math.PI;
+    if (xDiff > 0) degree += 180;
+    bird.fly(velocity, degree);
+    document.removeEventListener('mouseup', upEventCallback);
+  });
+});
