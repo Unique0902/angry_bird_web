@@ -3,3 +3,6 @@
   top: 50vh;
   left: 50px;
 }
+.btns {
+  position: fixed;
+}

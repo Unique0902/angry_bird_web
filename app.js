@@ -1,6 +1,7 @@
 "use strict";
 const GRAVITY = 9.8;
-const BIRD_FRAME = 60;
+const BIRD_FRAME = 30;
+const SPEED = 5;
 class AngryBird {
     constructor(size, bird) {
         this.flyInterval = null;
@@ -50,19 +51,21 @@ class AngryBird {
                 if (this.loc.y < 0)
                     this.flyInterval && clearInterval(this.flyInterval);
                 y_velocity -= GRAVITY / BIRD_FRAME;
-            }, Math.floor(1000 / BIRD_FRAME));
+            }, Math.floor(1000 / BIRD_FRAME / SPEED));
         };
         this.size = size;
         this.bird = bird;
+        bird && (bird.style.width = `${size}px`);
+        bird && (bird.style.height = `${size}px`);
     }
 }
 const birdTag = document.getElementById('bird');
-const bird = new AngryBird(10, birdTag);
+const bird = new AngryBird(40, birdTag);
 const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 if (startBtn) {
     startBtn.addEventListener('click', () => {
-        bird.fly(100, 60);
+        bird.fly(100, 30);
     });
 }
 if (stopBtn) {
