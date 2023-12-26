@@ -2,6 +2,7 @@
 const GRAVITY = 9.8;
 const BIRD_FRAME = 30;
 const SPEED = 5;
+const POWER_LEVEL = 3;
 class AngryBird {
     constructor(size, bird) {
         this.flyInterval = null;
@@ -36,9 +37,10 @@ class AngryBird {
                 clearInterval(this.flyInterval);
                 this.flyInterval = null;
             }
+            const controlledVelocity = (velocity / 5) * POWER_LEVEL;
             const radian = (degree * Math.PI) / 180;
-            const x_velocity = velocity * Math.cos(radian);
-            let y_velocity = velocity * Math.sin(radian);
+            const x_velocity = controlledVelocity * Math.cos(radian);
+            let y_velocity = controlledVelocity * Math.sin(radian);
             this.clearLoc();
             this.flyInterval = setInterval(() => {
                 if (!this.bird) {
