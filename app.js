@@ -1,6 +1,6 @@
 "use strict";
 const GRAVITY = 9.8;
-const BIRD_FRAME = 30;
+const BIRD_FRAME = 60;
 const SPEED = 5;
 const POWER_LEVEL = 3;
 class AngryBird {
@@ -49,7 +49,7 @@ class AngryBird {
                 }
                 this.loc.x += x_velocity / BIRD_FRAME;
                 this.loc.y += y_velocity / BIRD_FRAME;
-                this.bird.style.transform = `translate(${this.loc.x}px,${(this.loc.y * -1) / 2}px)`;
+                this.bird.style.transform = `translate(${this.loc.x}px,${this.loc.y * -1}px)`;
                 if (this.loc.y < 0) {
                     this.flyInterval && clearInterval(this.flyInterval);
                     this.clearLoc();
@@ -107,7 +107,6 @@ birdTag === null || birdTag === void 0 ? void 0 : birdTag.addEventListener('mous
             degree += 180;
         if (degree < 0)
             degree += 360;
-        console.log(degree);
         bird.fly(velocity, degree);
         document.removeEventListener('mousemove', moveEventCallback);
         document.removeEventListener('mouseup', upEventCallback);

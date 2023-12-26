@@ -1,5 +1,5 @@
 const GRAVITY = 9.8;
-const BIRD_FRAME = 30;
+const BIRD_FRAME = 60;
 const SPEED = 5;
 const POWER_LEVEL = 3;
 
@@ -48,6 +48,7 @@ class AngryBird {
     }
     const controlledVelocity = (velocity / 5) * POWER_LEVEL;
     const radian = (degree * Math.PI) / 180;
+
     const x_velocity = controlledVelocity * Math.cos(radian);
     let y_velocity = controlledVelocity * Math.sin(radian);
     this.clearLoc();
@@ -60,7 +61,7 @@ class AngryBird {
       this.loc.x += x_velocity / BIRD_FRAME;
       this.loc.y += y_velocity / BIRD_FRAME;
       this.bird.style.transform = `translate(${this.loc.x}px,${
-        (this.loc.y * -1) / 2
+        this.loc.y * -1
       }px)`;
       if (this.loc.y < 0) {
         this.flyInterval && clearInterval(this.flyInterval);
@@ -130,7 +131,6 @@ birdTag?.addEventListener('mousedown', () => {
     let degree = (Math.atan(yDiff / (xDiff * -1)) * 180) / Math.PI;
     if (xDiff > 0) degree += 180;
     if (degree < 0) degree += 360;
-    console.log(degree);
 
     bird.fly(velocity, degree);
     document.removeEventListener('mousemove', moveEventCallback);
