@@ -6,14 +6,23 @@ const POWER_LEVEL = 3;
 class AngryBird {
   size: number;
   bird: HTMLImageElement | null;
+  topDownArrow: HTMLElement | null;
+  leftRightArrow: HTMLElement | null;
   flyInterval: number | null = null;
   loc = {
     x: 0,
     y: 0,
   };
-  constructor(size: number, bird: HTMLElement | null) {
+  constructor(
+    size: number,
+    bird: HTMLElement | null,
+    topDownArrow: HTMLElement | null,
+    leftRightArrow: HTMLElement | null
+  ) {
     this.size = size;
     this.bird = bird as HTMLImageElement;
+    this.topDownArrow = topDownArrow;
+    this.leftRightArrow = leftRightArrow;
     bird && (bird.style.width = `${size}px`);
     bird && (bird.style.height = `${size}px`);
   }
@@ -75,7 +84,6 @@ class AngryBird {
         setTimeout(() => {
           this.clearLoc();
         }, 1000);
-        // this.clearLoc();
       }
       y_velocity -= GRAVITY / BIRD_FRAME;
     }, Math.floor(1000 / BIRD_FRAME / SPEED));
@@ -83,13 +91,13 @@ class AngryBird {
 }
 
 const birdTag = document.getElementById('bird');
+const topDownArrow = document.getElementById('topdown_arrow');
+const leftRightArrow = document.getElementById('leftright_arrow');
 
-const bird = new AngryBird(40, birdTag);
+const bird = new AngryBird(40, birdTag, topDownArrow, leftRightArrow);
 if (birdTag) {
   birdTag.style.top = `${birdTag.getBoundingClientRect().y - bird.size}px`;
 }
-const startBtn = document.getElementById('start');
-const stopBtn = document.getElementById('stop');
 
 const birdLineTag = document.getElementById('bird_line');
 if (birdLineTag && birdTag) {
@@ -118,6 +126,31 @@ function moveEventCallback(moveEvent: MouseEvent) {
           ? 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="100%" x2="100%" y2="0" stroke="gray" /></svg>'
           : 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="100%" y2="100%" stroke="gray" /></svg>'
       }')`;
+
+      if (bird.topDownArrow && bird.leftRightArrow) {
+        if (yDiff > 0) {
+          bird.topDownArrow.style.top = '0';
+          bird.topDownArrow.style.removeProperty('bottom');
+          bird.leftRightArrow.style.top = '0';
+          bird.leftRightArrow.style.removeProperty('bottom');
+        } else {
+          bird.topDownArrow.style.bottom = '0';
+          bird.topDownArrow.style.removeProperty('top');
+          bird.leftRightArrow.style.bottom = '0';
+          bird.leftRightArrow.style.removeProperty('top');
+        }
+        if (xDiff > 0) {
+          bird.leftRightArrow.style.left = '0';
+          bird.leftRightArrow.style.removeProperty('right');
+          bird.topDownArrow.style.left = '0';
+          bird.topDownArrow.style.removeProperty('right');
+        } else {
+          bird.leftRightArrow.style.right = '0';
+          bird.leftRightArrow.style.removeProperty('left');
+          bird.topDownArrow.style.right = '0';
+          bird.topDownArrow.style.removeProperty('left');
+        }
+      }
     }
   }
 }

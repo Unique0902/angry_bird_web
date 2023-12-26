@@ -24,8 +24,6 @@ img {
   height: 0px;
   top: 50vh;
   left: 100px;
-  /* border: 1px solid black; */
-  /* border-radius: 100%; */
 }
 
 #ground {
@@ -35,4 +33,17 @@ img {
   left: 0;
   width: 100vw;
   height: 50vh;
+}
+
+#topdown_arrow {
+  position: absolute;
+  width: 40px;
+  height: 1px;
+  background-color: black;
+}
+#leftright_arrow {
+  position: absolute;
+  width: 1px;
+  height: 40px;
+  background-color: black;
 }
