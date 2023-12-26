@@ -103,11 +103,11 @@ function moveEventCallback(moveEvent: MouseEvent) {
     const yDiff =
       moveEvent.clientY - birdTag.getBoundingClientRect().y - bird.size / 2;
     if (birdLineTag) {
-      birdLineTag.style.width = `${xDiff > 0 ? xDiff : xDiff * -1}px`;
-      birdLineTag.style.height = `${yDiff > 0 ? yDiff : yDiff * -1}px`;
-      birdLineTag.style.transform = `translate(${xDiff < 0 ? xDiff : 0}px,${
-        yDiff < 0 ? yDiff : 0
-      }px)`;
+      birdLineTag.style.width = `${xDiff > 0 ? xDiff * 2 : xDiff * -1 * 2}px`;
+      birdLineTag.style.height = `${yDiff > 0 ? yDiff * 2 : yDiff * -1 * 2}px`;
+      birdLineTag.style.transform = `translate(${
+        xDiff > 0 ? xDiff * -1 : xDiff
+      }px,${yDiff > 0 ? yDiff * -1 : yDiff}px)`;
       birdLineTag.style.background = `url('${
         xDiff * yDiff < 0
           ? 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="100%" x2="100%" y2="0" stroke="gray" /></svg>'
