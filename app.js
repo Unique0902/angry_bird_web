@@ -103,7 +103,9 @@ birdTag === null || birdTag === void 0 ? void 0 : birdTag.addEventListener('mous
         let degree = (Math.atan(yDiff / (xDiff * -1)) * 180) / Math.PI;
         if (xDiff > 0)
             degree += 180;
-        console.log(velocity, degree);
+        if (degree < 0)
+            degree += 360;
+        console.log(degree);
         bird.fly(velocity, degree);
         document.removeEventListener('mousemove', moveEventCallback);
         document.removeEventListener('mouseup', upEventCallback);

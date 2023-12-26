@@ -26,7 +26,6 @@ img {
   width: 50px;
   height: 10px;
   /* border: 2px solid black; */
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="100%" x2="100%" y2="0" stroke="gray" /></svg>');
   top: 50vh;
   left: 100px;
 }
