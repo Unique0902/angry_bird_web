@@ -5,7 +5,7 @@ const POWER_LEVEL = 3;
 
 class AngryBird {
   size: number;
-  bird: HTMLElement | null;
+  bird: HTMLImageElement | null;
   flyInterval: number | null = null;
   loc = {
     x: 0,
@@ -13,7 +13,7 @@ class AngryBird {
   };
   constructor(size: number, bird: HTMLElement | null) {
     this.size = size;
-    this.bird = bird;
+    this.bird = bird as HTMLImageElement;
     bird && (bird.style.width = `${size}px`);
     bird && (bird.style.height = `${size}px`);
   }
@@ -23,6 +23,7 @@ class AngryBird {
       throw new Error('now bird!');
     }
     this.bird.style.transform = 'translate(0)';
+    this.bird.src = './assets/angry_bird.webp';
     this.loc = {
       x: 0,
       y: 0,
@@ -65,7 +66,16 @@ class AngryBird {
       }px)`;
       if (this.loc.y < 0) {
         this.flyInterval && clearInterval(this.flyInterval);
-        this.clearLoc();
+        this.bird.src = './assets/angry_bird_2.png';
+
+        window.scrollTo({
+          left: this.loc.x,
+          top: 0,
+        });
+        setTimeout(() => {
+          this.clearLoc();
+        }, 1000);
+        // this.clearLoc();
       }
       y_velocity -= GRAVITY / BIRD_FRAME;
     }, Math.floor(1000 / BIRD_FRAME / SPEED));
@@ -75,20 +85,12 @@ class AngryBird {
 const birdTag = document.getElementById('bird');
 
 const bird = new AngryBird(40, birdTag);
-
+if (birdTag) {
+  birdTag.style.top = `${birdTag.getBoundingClientRect().y - bird.size}px`;
+}
 const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
 
-if (startBtn) {
-  startBtn.addEventListener('click', () => {
-    bird.fly(100, 30);
-  });
-}
-if (stopBtn) {
-  stopBtn.addEventListener('click', () => {
-    bird.stop();
-  });
-}
 const birdLineTag = document.getElementById('bird_line');
 if (birdLineTag && birdTag) {
   birdLineTag.style.left = `${

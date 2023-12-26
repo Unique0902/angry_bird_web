@@ -4,9 +4,6 @@
   left: 100px;
   z-index: 5;
 }
-.btns {
-  position: fixed;
-}
 
 img {
   -webkit-user-select: none;
@@ -29,4 +26,13 @@ img {
   left: 100px;
   /* border: 1px solid black; */
   /* border-radius: 100%; */
+}
+
+#ground {
+  border-bottom: 1px solid black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 50vh;
 }
