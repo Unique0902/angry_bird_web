@@ -75,7 +75,27 @@ if (stopBtn) {
         bird.stop();
     });
 }
+const birdLineTag = document.getElementById('bird_line');
+if (birdLineTag && birdTag) {
+    birdLineTag.style.left = `${birdTag.getBoundingClientRect().x + bird.size / 2}px`;
+    birdLineTag.style.top = `${birdTag.getBoundingClientRect().y + bird.size / 2}px`;
+}
+function moveEventCallback(moveEvent) {
+    if (birdTag) {
+        const xDiff = moveEvent.clientX - birdTag.getBoundingClientRect().x - bird.size / 2;
+        const yDiff = moveEvent.clientY - birdTag.getBoundingClientRect().y - bird.size / 2;
+        if (birdLineTag) {
+            birdLineTag.style.width = `${xDiff > 0 ? xDiff : xDiff * -1}px`;
+            birdLineTag.style.height = `${yDiff > 0 ? yDiff : yDiff * -1}px`;
+            birdLineTag.style.transform = `translate(${xDiff < 0 ? xDiff : 0}px,${yDiff < 0 ? yDiff : 0}px)`;
+            birdLineTag.style.background = `url('${xDiff * yDiff < 0
+                ? 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="100%" x2="100%" y2="0" stroke="gray" /></svg>'
+                : 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="100%" y2="100%" stroke="gray" /></svg>'}')`;
+        }
+    }
+}
 birdTag === null || birdTag === void 0 ? void 0 : birdTag.addEventListener('mousedown', () => {
+    document.addEventListener('mousemove', moveEventCallback);
     document.addEventListener('mouseup', function upEventCallback(e) {
         const xDiff = e.clientX - (birdTag === null || birdTag === void 0 ? void 0 : birdTag.getBoundingClientRect().x) - bird.size / 2;
         const yDiff = e.clientY - (birdTag === null || birdTag === void 0 ? void 0 : birdTag.getBoundingClientRect().y) - bird.size / 2;
@@ -83,7 +103,9 @@ birdTag === null || birdTag === void 0 ? void 0 : birdTag.addEventListener('mous
         let degree = (Math.atan(yDiff / (xDiff * -1)) * 180) / Math.PI;
         if (xDiff > 0)
             degree += 180;
+        console.log(velocity, degree);
         bird.fly(velocity, degree);
+        document.removeEventListener('mousemove', moveEventCallback);
         document.removeEventListener('mouseup', upEventCallback);
     });
 });
