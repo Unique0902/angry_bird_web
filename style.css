@@ -47,3 +47,8 @@ img {
   height: 40px;
   background-color: black;
 }
+#pig {
+  position: absolute;
+  top: 50vh;
+  right: 150px;
+}

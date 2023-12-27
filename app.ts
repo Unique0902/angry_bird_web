@@ -2,10 +2,12 @@ const GRAVITY = 9.8;
 const BIRD_FRAME = 60;
 const SPEED = 5;
 const POWER_LEVEL = 3;
+const PIG_SIZE = 50;
 
 class AngryBird {
   size: number;
   bird: HTMLImageElement | null;
+  pig: HTMLImageElement | null;
   topDownArrow: HTMLElement | null;
   leftRightArrow: HTMLElement | null;
   flyInterval: number | null = null;
@@ -16,11 +18,13 @@ class AngryBird {
   constructor(
     size: number,
     bird: HTMLElement | null,
+    pig: HTMLElement | null,
     topDownArrow: HTMLElement | null,
     leftRightArrow: HTMLElement | null
   ) {
     this.size = size;
     this.bird = bird as HTMLImageElement;
+    this.pig = pig as HTMLImageElement;
     this.topDownArrow = topDownArrow;
     this.leftRightArrow = leftRightArrow;
     bird && (bird.style.width = `${size}px`);
@@ -39,6 +43,12 @@ class AngryBird {
     };
   };
 
+  clearPig = () => {
+    if (this.pig) {
+      this.pig.src = './assets/pig.webp';
+    }
+  };
+
   stop = () => {
     if (!this.flyInterval) throw new Error('no interval!');
     clearInterval(this.flyInterval);
@@ -47,7 +57,10 @@ class AngryBird {
 
   fly = (velocity: number, degree: number) => {
     if (!this.bird) {
-      throw new Error('now bird!');
+      throw new Error('no bird!');
+    }
+    if (!this.pig) {
+      throw new Error('no pig!');
     }
     if (degree > 360 || degree < 0) {
       throw new Error('not valid degree of bird!!');
@@ -56,12 +69,22 @@ class AngryBird {
       clearInterval(this.flyInterval);
       this.flyInterval = null;
     }
+    const pigLoc = {
+      x:
+        this.pig.getBoundingClientRect().x -
+        this.bird.getBoundingClientRect().x,
+      y:
+        this.pig.getBoundingClientRect().y -
+        this.bird.getBoundingClientRect().y,
+    };
     const controlledVelocity = (velocity / 5) * POWER_LEVEL;
     const radian = (degree * Math.PI) / 180;
 
     const x_velocity = controlledVelocity * Math.cos(radian);
     let y_velocity = controlledVelocity * Math.sin(radian);
     this.clearLoc();
+    this.clearPig();
+    const pigState = { isCrahed: false };
     this.flyInterval = setInterval(() => {
       if (!this.bird) {
         this.flyInterval && clearInterval(this.flyInterval);
@@ -73,6 +96,21 @@ class AngryBird {
       this.bird.style.transform = `translate(${this.loc.x}px,${
         this.loc.y * -1
       }px)`;
+      if (
+        pigLoc.x - this.loc.x <= this.size &&
+        pigLoc.x - this.loc.x >= this.size * -1
+      ) {
+        if (
+          pigLoc.y - this.loc.y <= this.size &&
+          pigLoc.y - this.loc.y >= this.size * -1
+        ) {
+          if (!pigState.isCrahed) {
+            console.log('충돌!!!!!');
+            pigState.isCrahed = true;
+            this.pig && (this.pig.src = './assets/pig_dead.jfif');
+          }
+        }
+      }
       if (this.loc.y < 0) {
         this.flyInterval && clearInterval(this.flyInterval);
         this.bird.src = './assets/angry_bird_2.png';
@@ -83,6 +121,7 @@ class AngryBird {
         });
         setTimeout(() => {
           this.clearLoc();
+          this.clearPig();
         }, 1000);
       }
       y_velocity -= GRAVITY / BIRD_FRAME;
@@ -93,10 +132,14 @@ class AngryBird {
 const birdTag = document.getElementById('bird');
 const topDownArrow = document.getElementById('topdown_arrow');
 const leftRightArrow = document.getElementById('leftright_arrow');
+const pigTag = document.getElementById('pig');
 
-const bird = new AngryBird(40, birdTag, topDownArrow, leftRightArrow);
+const bird = new AngryBird(40, birdTag, pigTag, topDownArrow, leftRightArrow);
 if (birdTag) {
   birdTag.style.top = `${birdTag.getBoundingClientRect().y - bird.size}px`;
+}
+if (pigTag) {
+  pigTag.style.top = `${pigTag.getBoundingClientRect().y - PIG_SIZE}px`;
 }
 
 const birdLineTag = document.getElementById('bird_line');
