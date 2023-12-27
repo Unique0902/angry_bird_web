@@ -1,6 +1,6 @@
 #bird {
   position: absolute;
-  top: 50vh;
+  top: 70vh;
   left: 100px;
   z-index: 5;
 }
@@ -32,7 +32,7 @@ img {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 50vh;
+  height: 70vh;
 }
 
 #topdown_arrow {
@@ -49,6 +49,6 @@ img {
 }
 #pig {
   position: absolute;
-  top: 50vh;
+  top: 70vh;
   right: 150px;
 }
